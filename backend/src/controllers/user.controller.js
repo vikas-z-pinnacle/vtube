@@ -14,7 +14,7 @@ const registerUser = asyncHandler( async (req, res) => {
     }
 
     //check if already exists by username and email
-    const userExists = User.findOne({
+    const userExists = await User.findOne({
         $or: [{username}, {email}]
     })
 
@@ -24,7 +24,12 @@ const registerUser = asyncHandler( async (req, res) => {
 
     //check for image and avatar
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+    // const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+    let coverImageLocalPath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path
+    }
 
     if(!avatarLocalPath){
         throw new ApiError(400, "Avatar is required")
@@ -32,12 +37,9 @@ const registerUser = asyncHandler( async (req, res) => {
 
     //upload media to cloudinary
     const avatar = await uploadOnCloudinary(avatarLocalPath)
-    
-    if(coverImageLocalPath){
-        const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-    }
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
-    if(avatar){
+    if(!avatar){
         throw new ApiError(400, "Avatar is required")
     }
     
@@ -52,7 +54,7 @@ const registerUser = asyncHandler( async (req, res) => {
     })
 
     //remove password and refreshToken from user object
-    const createdUser = await User.findById(user._id).select("-password", "-refreshToken")
+    const createdUser = await User.findById(user._id).select("-password -refreshToken")
 
     //check is user created successfully
     if(!createdUser){
