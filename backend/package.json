@@ -7,7 +7,11 @@
   "scripts": {
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "backend",
+    "javascript",
+    "nodejs"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
