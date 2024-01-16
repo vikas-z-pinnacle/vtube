@@ -27,32 +27,18 @@ const createTweet = asyncHandler(async (req, res) => {
     }
 })
 
-const getTweets = asyncHandler(async (req, res) => {
+const getUserTweets = asyncHandler(async (req, res) => {
     try {
-        const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query
+        const { page = 1, limit = 10 } = req.query
+        const { userId } = req.params
 
         const matchCriteria = {};
-        if (query) {
-            matchCriteria.$or = [
-                { content: { $regex: query, $options: 'i' } }
-            ];
-        }
         if(userId){
             matchCriteria.owner = userId
         }
 
-        // console.log(query)
-
-        const sortOptions = {};
-        if(sortBy && sortType){
-            sortOptions[sortBy] = sortType === 'desc' ? -1 : 1
-        }else{
-            sortOptions.createdAt = -1
-        }
-
         const tweets = await Tweet.aggregatePaginate([
-            { $match : matchCriteria },
-            { $sort: sortOptions }
+            { $match : matchCriteria }
         ], { page, limit })
 
         return res.status(200).json(
@@ -132,7 +118,7 @@ const deleteTweet = asyncHandler(async (req, res) => {
 
 export {
     createTweet,
-    getTweets,
+    getUserTweets,
     updateTweet,
     deleteTweet
 }
