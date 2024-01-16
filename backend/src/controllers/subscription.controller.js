@@ -17,7 +17,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
             channel: channelId
         });
 
-        console.log(existingSubscription);
+        // console.log(existingSubscription);
 
         if (existingSubscription) {
             // If the subscription exists, then unsubscribe (remove the subscription)
@@ -37,7 +37,7 @@ const toggleSubscription = asyncHandler(async (req, res) => {
                 channel: channelId
             })
 
-            console.log(newSubscription);
+            // console.log(newSubscription);
 
             return res
             .status(200)
