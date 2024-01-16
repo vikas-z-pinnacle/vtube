@@ -7,10 +7,10 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 
 
 const toggleSubscription = asyncHandler(async (req, res) => {
-    const { channelId } = req.params;
-    const subscriberId = req.user._id;
-
     try {
+        const { channelId } = req.params;
+        const subscriberId = req.user._id;
+
         // Check if the subscription already exists
         const existingSubscription = await Subscription.findOne({
             subscriber: subscriberId,
@@ -54,9 +54,9 @@ const toggleSubscription = asyncHandler(async (req, res) => {
 
 // controller to return channel list to which user has subscribed
 const getSubscribedChannels = asyncHandler(async (req, res) => {
-    const { subscriberId } = req.params
-
     try {
+        const { subscriberId } = req.params
+
         // Find all subscriptions where the given subscriberId matches the subscriber field
         const subscriptions = await Subscription.find({ subscriber: subscriberId })
             .populate('channel', 'username'); // Populate the 'channel' field with the 'username' field from the 'User' model
@@ -81,9 +81,9 @@ export default getSubscribedChannels;
 
 // controller to return subscriber list of a channel
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
-    const { channelId } = req.params
-
     try {
+        const { channelId } = req.params
+
         const subscriptions = await Subscription.find({ channel: channelId }).populate('subscriber');
         const subscribers = subscriptions.map(subscription => subscription.subscriber);
 
