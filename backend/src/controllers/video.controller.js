@@ -97,7 +97,7 @@ const getVideoById = asyncHandler(async (req, res) => {
         // Validate that videoId is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(videoId)) {
             return res.status(400).json(
-                new ApiResponse(400, video, "Invalid videoId format")
+                new ApiResponse(400, videoId, "Invalid videoId format")
             )
         }
 
@@ -127,7 +127,7 @@ const updateVideo = asyncHandler(async (req, res) => {
         // Validate that videoId is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(videoId)) {
             return res.status(400).json(
-                new ApiResponse(400, video, "Invalid videoId format")
+                new ApiResponse(400, videoId, "Invalid videoId format")
             )
         }
 
@@ -196,7 +196,7 @@ const deleteVideo = asyncHandler(async (req, res) => {
         // Validate that videoId is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(videoId)) {
             return res.status(400).json(
-                new ApiResponse(400, video, "Invalid videoId format")
+                new ApiResponse(400, videoId, "Invalid videoId format")
             )
         }
 
@@ -228,7 +228,7 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
         // Validate that videoId is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(videoId)) {
             return res.status(400).json(
-                new ApiResponse(400, video, "Invalid videoId format")
+                new ApiResponse(400, videoId, "Invalid videoId format")
             )
         }
 
