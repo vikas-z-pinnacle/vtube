@@ -96,37 +96,13 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
 
 const getLikedVideos = asyncHandler(async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query
 
-        const matchCriteria = {};
-        matchCriteria.likedBy = req.user._id
-        matchCriteria.video = { $exists: true }
-
-        const likedVideos = await Like.aggregatePaginate([
-            {
-                $match: matchCriteria
-            },
-            {
-                $lookup: {
-                    from: 'videos',
-                    localField: 'video',
-                    foreignField: '_id',
-                    as: 'videoDetails'
-                }
-            },
-            {
-                $unwind: '$videoDetails'
-            },
-            {
-                $project: {
-                    _id: '$videoDetails._id',
-                    title: '$videoDetails.title',
-                    description: '$videoDetails.description'
-                }
-            },
-        ], { page, limit });
-
-        // console.log(matchCriteria)
+        const likedVideos = await Like.find({ likedBy: req.user._id, video: { $exists: true } })
+            .populate({
+                path: 'video',
+                model: 'Video',
+                select: 'title description videoFile thumbnail'
+            });
 
         return res.status(200).json(
             new ApiResponse(200, likedVideos, "Liked videos fetched successfully")

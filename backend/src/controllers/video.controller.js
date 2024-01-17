@@ -186,7 +186,6 @@ const updateVideo = asyncHandler(async (req, res) => {
     } catch (error) {
         throw new ApiError(500, "Error updating video: " + error.message)
     }
-
 })
 
 const deleteVideo = asyncHandler(async (req, res) => {
