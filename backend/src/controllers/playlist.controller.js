@@ -10,7 +10,11 @@ const createPlaylist = asyncHandler(async (req, res) => {
         const { name, description } = req.body
 
         if ([name, description].some((field) => field?.trim() === "")) {
-            throw new ApiError(400, "All fields are required");
+            return res
+                .status(400)
+                .json(
+                    new ApiError(400, null, "All fields are required")
+                )
         }
 
         const newPlaylist = await Playlist.create({
@@ -23,7 +27,11 @@ const createPlaylist = asyncHandler(async (req, res) => {
             new ApiResponse(200, newPlaylist, "Playlist created successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error creating playlist: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error creating playlist: " + error.message)
+                )
     }
 })
 
@@ -43,7 +51,11 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
             new ApiResponse(200, userPlaylist, "User playlist fetched successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error fetching user playlist: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error fetching user playlist: " + error.message)
+                )
     }
 })
 
@@ -72,7 +84,11 @@ const getPlaylistById = asyncHandler(async (req, res) => {
             new ApiResponse(200, playlist, "Playlist fetched successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error fetching playlist details: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error fetching playlist details: " + error.message)
+                )
     }
 })
 
@@ -111,7 +127,11 @@ const addVideoToPlaylist = asyncHandler(async (req, res) => {
             new ApiResponse(200, {}, "Video added to the playlist successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error adding video to the playlist: " + error.message);
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error adding video to the playlist: " + error.message)
+                )
     }
 })
 
@@ -152,7 +172,11 @@ const removeVideoFromPlaylist = asyncHandler(async (req, res) => {
             new ApiResponse(200, {}, "Video removed from the playlist successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error removing video from the playlist: " + error.message);
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error removing video from the playlist: " + error.message)
+                )
     }
 })
 
@@ -184,7 +208,11 @@ const deletePlaylist = asyncHandler(async (req, res) => {
             new ApiResponse(200, {}, "Playlist deleted successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error deleting playlist: " + error.message);
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error deleting playlist: " + error.message)
+                )
     }
 })
 
@@ -231,7 +259,11 @@ const updatePlaylist = asyncHandler(async (req, res) => {
             new ApiResponse(200, updatedPlaylist, "Playlist updated successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error updating playlist: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error updating playlist: " + error.message)
+                )
     }
 })
 

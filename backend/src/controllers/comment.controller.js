@@ -10,19 +10,23 @@ const getVideoComments = asyncHandler(async (req, res) => {
         const { page = 1, limit = 10 } = req.query
 
         const matchCriteria = {};
-        if(videoId){
+        if (videoId) {
             matchCriteria.video = videoId
         }
 
         const comments = await Comment.aggregatePaginate([
-            { $match : matchCriteria }
+            { $match: matchCriteria }
         ], { page, limit })
 
         return res.status(200).json(
             new ApiResponse(200, comments, "Comments fetched successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error fetching comments: " + error.message ) 
+        return res
+            .status(500)
+            .json(
+                new ApiError(500, null, "Error fetching comments: " + error.message)
+            )
     }
 
 })
@@ -32,11 +36,15 @@ const addComment = asyncHandler(async (req, res) => {
         const { content } = req.body
         const { videoId } = req.params
 
-        if(content.trim() === ""){
-            throw new ApiError(400, "Content is required")
+        if (content.trim() === "") {
+            return res
+                .status(400)
+                .json(
+                    new ApiError(400, null, "Content is required")
+                )
         }
 
-        if(!mongoose.Types.ObjectId.isValid(videoId)){
+        if (!mongoose.Types.ObjectId.isValid(videoId)) {
             return res.status(400).json(
                 new ApiResponse(400, videoId, "Invalid videoId format")
             )
@@ -46,14 +54,18 @@ const addComment = asyncHandler(async (req, res) => {
         const newComment = await Comment.create({
             content: content,
             video: videoId,
-            owner: req.user._id  
+            owner: req.user._id
         })
 
         return res.status(201).json(
             new ApiResponse(200, newComment, "Comment created successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error creating comment: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error creating comment: " + error.message)
+                )
     }
 })
 
@@ -62,7 +74,7 @@ const updateComment = asyncHandler(async (req, res) => {
         const { content } = req.body
         const { commentId } = req.params
 
-        if(!mongoose.Types.ObjectId.isValid(commentId)){
+        if (!mongoose.Types.ObjectId.isValid(commentId)) {
             return res.status(400).json(
                 new ApiResponse(400, commentId, "Invalid commentId format")
             )
@@ -70,7 +82,7 @@ const updateComment = asyncHandler(async (req, res) => {
 
         const commentData = await Comment.findById(commentId).populate('owner', 'username');
 
-        if(!commentData){
+        if (!commentData) {
             return res.status(404).json(
                 new ApiResponse(404, commentData, "Comment not found")
             )
@@ -78,21 +90,25 @@ const updateComment = asyncHandler(async (req, res) => {
 
         const updateValues = {};
 
-        if(content){
+        if (content) {
             updateValues.content = content;
         }
 
         const updatedComment = await Comment.findByIdAndUpdate(
             commentId,
             updateValues,
-            {new: true, runValidators: true}
+            { new: true, runValidators: true }
         ).populate("owner", "username");
 
         return res.status(200).json(
             new ApiResponse(200, updatedComment, "Comment updated successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error updating comment: " + error.message )
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error updating comment: " + error.message)
+                )
     }
 })
 
@@ -100,7 +116,7 @@ const deleteComment = asyncHandler(async (req, res) => {
     try {
         const { commentId } = req.params
 
-        if(!mongoose.Types.ObjectId.isValid(commentId)){
+        if (!mongoose.Types.ObjectId.isValid(commentId)) {
             return res.status(400).json(
                 new ApiResponse(400, commentId, "Invalid commentId format")
             )
@@ -108,7 +124,7 @@ const deleteComment = asyncHandler(async (req, res) => {
 
         const commentToDelete = await Comment.findById(commentId);
 
-        if(!commentToDelete){
+        if (!commentToDelete) {
             return res.status(404).json(
                 new ApiResponse(404, commentToDelete, "Comment not found")
             )
@@ -120,7 +136,11 @@ const deleteComment = asyncHandler(async (req, res) => {
             new ApiResponse(200, {}, "Comment deleted successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error deleting comment: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error deleting comment: " + error.message)
+                )
     }
 })
 

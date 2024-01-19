@@ -30,7 +30,11 @@ const toggleVideoLike = asyncHandler(async (req, res) => {
             new ApiResponse(200, newLike, "Like status updated successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error updating like status: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error updating like status: " + error.message)
+                )
     }
 });
 
@@ -60,7 +64,11 @@ const toggleCommentLike = asyncHandler(async (req, res) => {
             new ApiResponse(200, newLike, "Like status updated successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error updating like status: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error updating like status: " + error.message)
+                )
     }
 
 })
@@ -90,7 +98,11 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
             new ApiResponse(200, newLike, "Like status updated successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error updating like status: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error updating like status: " + error.message)
+                )
     }
 })
 
@@ -108,7 +120,11 @@ const getLikedVideos = asyncHandler(async (req, res) => {
             new ApiResponse(200, likedVideos, "Liked videos fetched successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error fetching likedVideos: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error fetching liked videos: " + error.message)
+                )
     }
 })
 

@@ -42,7 +42,11 @@ const getAllVideos = asyncHandler(async (req, res) => {
             new ApiResponse(200, videos, "Videos fetched successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error fetching videos: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error fetching videos: " + error.message)
+                )
     }
 });
 
@@ -51,7 +55,11 @@ const publishAVideo = asyncHandler(async (req, res) => {
         const { title, description } = req.body
 
         if ([title, description].some((field) => field?.trim() === "")) {
-            throw new ApiError(400, "All fields are required");
+            return res
+                .status(400)
+                .json(
+                    new ApiError(400, null, "All fields are required")
+                )
         }
 
         //check for image and avatar
@@ -63,7 +71,11 @@ const publishAVideo = asyncHandler(async (req, res) => {
         }
 
         if (!videoLocalPath) {
-            throw new ApiError(400, "Video is required")
+            return res
+                .status(400)
+                .json(
+                    new ApiError(400, null, "Video is required")
+                )
         }
 
         //upload media to cloudinary
@@ -86,7 +98,11 @@ const publishAVideo = asyncHandler(async (req, res) => {
             new ApiResponse(200, newVideo, "Video published successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error publishing video: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error publishing video: " + error.message)
+                )
     }
 });
 
@@ -115,7 +131,11 @@ const getVideoById = asyncHandler(async (req, res) => {
             new ApiResponse(200, video, "Video fetched successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error fetching video details: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error fetching video details: " + error.message)
+                )
     }
 });
 
@@ -184,7 +204,11 @@ const updateVideo = asyncHandler(async (req, res) => {
             new ApiResponse(200, updatedVideo, "Video updated successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error updating video: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error updating video: " + error.message)
+                )
     }
 })
 
@@ -216,7 +240,11 @@ const deleteVideo = asyncHandler(async (req, res) => {
             new ApiResponse(200, {}, "Video deleted successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error deleting video: " + error.message);
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error deleting video: " + error.message)
+                )
     }
 })
 
@@ -251,7 +279,11 @@ const togglePublishStatus = asyncHandler(async (req, res) => {
             new ApiResponse(200, updatedVideo, "Publish status updated successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error status update: " + error.message);
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error status update: " + error.message)
+                )
     }
 })
 

@@ -48,7 +48,11 @@ const toggleSubscription = asyncHandler(async (req, res) => {
             ))
         }
     } catch (error) {
-        new ApiError(500, "Error toggling subscription: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error toggling subscription: " + error.message)
+                )
     }
 });
 
@@ -72,7 +76,11 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
                 "Channels fetched successfully"
             ))
     } catch (error) {
-        new ApiError(500, "Error getting subscribed channels: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error getting subscribed channels: " + error.message)
+                )
     }
 });
 
@@ -95,7 +103,11 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
                 "Subscribers fetched successfully"
             ))
     } catch (error) {
-        new ApiError(500, "Error getting subscribed channels: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error getting subscribers: " + error.message)
+                )
     }
 })
 

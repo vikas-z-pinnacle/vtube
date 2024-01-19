@@ -10,7 +10,11 @@ const createTweet = asyncHandler(async (req, res) => {
         const { content } = req.body
 
         if(content.trim() === ""){
-            throw new ApiError(400, "Content is required")
+            return res
+                .status(400)
+                .json(
+                    new ApiError(400, null, "Content is required")
+                )
         }
 
         //create new twweet
@@ -23,7 +27,11 @@ const createTweet = asyncHandler(async (req, res) => {
             new ApiResponse(200, newTweet, "Tweet created successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error creating tweet: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error creating tweet: " + error.message)
+                )
     }
 })
 
@@ -45,7 +53,11 @@ const getUserTweets = asyncHandler(async (req, res) => {
             new ApiResponse(200, tweets, "Tweets fetched successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error fetching tweets: " + error.message ) 
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error fetching tweets: " + error.message)
+                )
     }
 })
 
@@ -84,7 +96,11 @@ const updateTweet = asyncHandler(async (req, res) => {
             new ApiResponse(200, updatedTweet, "Tweet updated successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error updating tweet: " + error.message )
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error updating tweet: " + error.message)
+                )
     }
 })
 
@@ -112,7 +128,11 @@ const deleteTweet = asyncHandler(async (req, res) => {
             new ApiResponse(200, {}, "Tweet deleted successfully")
         )
     } catch (error) {
-        throw new ApiError(500, "Error deleting tweet: " + error.message)
+        return res
+                .status(500)
+                .json(
+                    new ApiError(500, null, "Error deleting tweet: " + error.message)
+                )
     }
 })
 

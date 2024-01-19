@@ -1,3 +1,5 @@
 error response is not proper
 
 query search not working
+
+convert usercontroller methods to try catch
