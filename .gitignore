@@ -164,3 +164,8 @@ frontend/thumb
 frontend/sketch
 
 # End of https://www.toptal.com/developers/gitignore/api/react
+
+
+
+admin-dashboard/
+frontend_old/
